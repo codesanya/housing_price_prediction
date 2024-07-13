@@ -1,50 +1,87 @@
-# housing_price_prediction
 
-```markdown
-# Housing Price Prediction
+# World Real Estate Data Analysis and Prediction
 
-This repository contains scripts for predicting housing prices using machine learning models. The project includes data preprocessing, feature extraction, and model training using RandomForest and XGBoost.
+## Overview
 
-## Getting Started
+This project focuses on analyzing and predicting housing prices using machine learning techniques. The dataset used contains approximately 147,000 entries from global real estate markets.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+## Data Description
 
-### Prerequisites
+The dataset includes various features such as:
 
-- Python 3.x
-- Git (optional)
+- **title**: Title of the property listing.
+- **country**: Country where the property is located.
+- **location**: Specific location within the country.
+- **building_construction_year**: Year in which the building was constructed.
+- **building_total_floors**: Total number of floors in the building.
+- **apartment_total_area**: Total area of the apartment in square meters.
+- **apartment_living_area**: Living area of the apartment in square meters.
+- **price_in_USD**: Price of the property in US dollars.
+- **image**: URL link to the property's image.
+- **url**: URL link to the property's listing page.
 
-### Installation
+## Workflow
 
-1. Clone the repository:
+### 1. Data Preprocessing
 
-   ```bash
-   git clone https://github.com/<your-username>/<repository-name>.git
-   cd <repository-name>
-   ```
+#### Handling Missing Values
 
-2. Install the required Python packages:
+- Removed rows where 'price_in_USD' is missing since it's the target variable.
+- Filled missing numeric values ('apartment_total_area', 'apartment_living_area') using nearest neighbor imputation based on 'country', 'location', and 'price_in_USD'.
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+#### Encoding Categorical Features
 
-### Usage
+- Encoded categorical features ('title', 'country', 'location') using LabelEncoder.
 
-1. **Data Preprocessing**:
-   ```bash
-   python scripts/data_preprocessing.py
-   ```
+### 2. Feature Engineering
 
-2. **Model Training**:
-   ```bash
-   python scripts/model_training.py
-   ```
+- Extracted additional features such as:
+  - Property age from 'building_construction_year'.
+  - Living area ratio from 'apartment_living_area' and 'apartment_total_area'.
+  - Extracted image features using a pre-trained ResNet50V2 model for image URLs.
 
-3. **Predictions and Evaluation**:
-   After training the models, you can predict and evaluate the models using the scripts provided.
+### 3. Modeling
 
-### Results
+#### Random Forest Regression
 
-The results of the model training and evaluation will be printed in the terminal.
+- Trained a Random Forest Regressor with 200 estimators after standardizing the data.
+- Tuned hyperparameters using GridSearchCV to optimize performance.
+- Evaluated model performance using Mean Absolute Error (MAE), Mean Squared Error (MSE), and R² Score.
+
+#### XGBoost Regression
+
+- Utilized XGBoost Regressor for comparison, optimizing hyperparameters via GridSearchCV.
+- Assessed model accuracy using MAE, MSE, and R² Score metrics.
+
+### 4. Results
+
+- **Random Forest**:
+  - Mean Absolute Error: 22833.60
+  - Mean Squared Error: 2070649614.68
+  - R² Score: 0.841
+
+- **XGBoost**:
+  - Mean Absolute Error: 23877.50
+  - Mean Squared Error: 1741630575.80
+  - R² Score: 0.866
+
+## Prerequisites
+
+- Python 3
+- Pandas
+- Scikit-learn
+- XGBoost
+- TensorFlow
+- Requests
+- PIL
+- tqdm
+
+
+## Authors
+
+Sanya Vishwakarma
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
